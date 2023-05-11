@@ -71,6 +71,5 @@ include(CPack)
 
 enable_testing()
 
-
 add_test(print_ip_gtest print_ip_gtest)
 
