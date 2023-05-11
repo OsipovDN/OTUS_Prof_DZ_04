@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iomanip>
+#include <type_traits>
 #include <string>
 #include <vector>
 #include <list>
@@ -6,14 +8,11 @@
 
 
 template <typename T>
-void printIp(T&) {
+std::enable_if_t <std::is_integral_v <T>, std::string> printIp(const T&);
 
-}
+template <typename T>
+std::enable_if_t<std::is_floating_point_v <T>, std::string> printIp(const T&);
 
-template<>
-void printIp <std::vector<int>>(std::vector<int>&) {
-
-}
 
 
 int main() {
