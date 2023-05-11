@@ -14,7 +14,6 @@ template <typename T>
 std::enable_if_t<std::is_floating_point_v <T>, std::string> printIp(const T&);
 
 
-
 int main() {
 
 	/*char a = -1;
