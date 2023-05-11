@@ -15,7 +15,6 @@ void printIp <std::vector<int>>(std::vector<int>&) {
 
 }
 
-
 int main() {
 
 	/*char a = -1;
