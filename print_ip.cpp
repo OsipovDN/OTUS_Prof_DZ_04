@@ -8,6 +8,9 @@
 
 //Шаблоны для определения контейнер или нет
 template <typename T>
+auto type_v = isConteiner<T>::value;
+
+template <typename T>
 struct isConteiner {
 	static const bool type_value = false;
 };
@@ -25,7 +28,7 @@ struct isConteiner <std::list<int>> {
 
 
 template <typename T>
-void ipPrint(const T&, isConteiner < T >) {
+void ipPrint(const T& obj, typename isConteiner < T >::type_value = 0) {
 
 };
 
@@ -42,14 +45,15 @@ int main() {
 
 	char a = -1;
 	int b = 2130706433;
-	long c = 8875824491850138409;
-	/*std::string f;
-	std::vector <int> g;
-	std::list <int> h;*/
+	long long c = 8875824491850138409;
+	/*std::string f;;*/
+	std::vector <int> g = {255,255,255,255 };
 
-	ipPrint(a);
+	/*ipPrint(a);
 	ipPrint(b);
-	ipPrint(c);
+	ipPrint(c);*/
+
+	ipPrint(g);
 
 
 
