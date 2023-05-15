@@ -7,7 +7,7 @@
 #include <tuple>
 #include <bitset>
 
-//Ўаблоны дл€ определени€ контейнер или нет
+//Ўаблоны дл€ определени€ контейнер или нет (alias)
 template <typename T>
 auto isConteiner_v = isConteiner<T>::value;
 //false- если не контейнер
@@ -32,7 +32,7 @@ int strToInt(std::string obj) {
 	int res = 0;
 	for (auto it : obj) {
 		int val = static_cast<int>(it - '0');
-		res += val * pow(2, i);
+		res += val * (int)(pow(2, i));
 		i--;
 	}
 	return res;
@@ -76,35 +76,35 @@ void ipPrint(const T& obj, bool d = isConteiner_v <T>) {
 };
 
 
-template <typename T>
-std::enable_if_t<std::is_integral_v <T>, std::string> ipPrint(const T&) {};
+//template <typename T>
+//std::enable_if_t<std::is_integral_v <T>, std::string> ipPrint(const T&) {};
 
 
 int main() {
 
-	/*char a = -1;
+	char a = -1;
 	int b = 2130706433;
-	long long c = 8875824491850138409;*/
-	/*std::string f;;*/
-	/*std::vector <int> vec_ip = { 255,255,255,255 };
+	long long c = 8875824491850138409;
+	std::string f;;
+	std::vector <int> vec_ip = { 255,255,255,255 };
 	std::list<int> list_ip;
 	for (auto i = 0; i < 4; ++i)
-		list_ip.emplace_back(200 + i);*/
+		list_ip.emplace_back(200 + i);
 
 	/*ipPrint(a);
 	ipPrint(b);
 	ipPrint(c);*/
 
-	/*ipPrint(vec_ip);
-	ipPrint(list_ip);*/
+	ipPrint(vec_ip);
+	ipPrint(list_ip);
 	char a = -1;
 	//long long b = 8875824491850138409;
 	//int c = 2130706433;
-	std::vector<int> res;
+	/*std::vector<int> res;
 	res= transform <char>(a);
 	for (auto it : res) {
 		std::cout << it << " ";
-	}
+	}*/
 
 
 
