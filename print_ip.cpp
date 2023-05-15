@@ -26,23 +26,33 @@ struct isConteiner <std::list<int>> {
 	static const bool value = true;
 };
 
-//Шаблон для функции преобразования
+//Функция преобразования из двоичного представления в десятичное
+int strToInt(std::string obj) {
+	int i = 7;
+	int res = 0;
+	for (auto it : obj) {
+		int val = static_cast<int>(it - '0');
+		res += val * pow(2, i);
+		i--;
+	}
+	return res;
+}
+
+//Шаблон функции формирования ip адреса
 template<typename T>
 std::vector<int> transform(const T& val) {
-	std::bitset <sizeof(T) * 8> bit_obj(val);
-	std::vector <int> ip;
-	int byte = 0;
-	int j = 0;
-	for (int i = static_cast<int>((bit_obj.size() - 1)); i >= 0; --i) {
-		byte +=static_cast<int>( bit_obj[i] * pow(2, 7 - j));
-		if (j == 7) {
-			ip.push_back(byte);
-			byte = 0;
-			j = 0;
-			if (i != 0)
-				--i;
-		}
-		j++;
+	std::bitset <sizeof(T) * 8> obj(val);
+	std::string bit_pul = obj.to_string();
+	std::string::size_type start = 0;
+	std::string::size_type stop = bit_pul.size();
+
+	std::vector<int> vec_byte;
+	std::string byte;
+
+	while (start != stop) {
+		byte = bit_pul.substr(start, 8);
+		vec_byte.push_back(strToInt(byte));
+		start += 8;
 	}
 	return ip;
 }
@@ -66,8 +76,8 @@ void ipPrint(const T& obj, bool d = isConteiner_v <T>) {
 };
 
 
-//template <typename T>
-//std::enable_if_t<std::is_floating_point_v <T>, std::string> ipPrint(const T&) {};
+template <typename T>
+std::enable_if_t<std::is_integral_v <T>, std::string> ipPrint(const T&) {};
 
 
 int main() {
