@@ -7,7 +7,11 @@
 #include <tuple>
 #include <bitset>
 
-//Шаблоны для определения контейнер или нет (alias)
+/*! 
+	\brief Шаблоны для определения контейнер или нет(alias)
+
+	Алиас для простого доступа к полю структуры
+*/
 template <typename T>
 auto isConteiner_v = isConteiner<T>::value;
 //false- если не контейнер
@@ -28,7 +32,7 @@ struct isConteiner <std::list<int>> {
 
 //Функция преобразования из двоичного представления в десятичное
 int strToInt(std::string obj) {
-	int i = 7;
+	int i = 7;	///< Переменная для расчета фкториала
 	int res = 0;
 	for (auto it : obj) {
 		int val = static_cast<int>(it - '0');
