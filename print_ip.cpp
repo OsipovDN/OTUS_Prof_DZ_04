@@ -41,7 +41,7 @@ int strToInt(std::string obj) {
 	return res;
 }
 
-//Шаблон функции формирования ip адреса
+//Шаблон функции преобразования std::string в std::vector <int>- vec {255,255,255,255}
 template<typename T>
 std::vector<int> transform(const T& val) {
 	std::bitset <sizeof(T) * 8> obj(val);
@@ -85,24 +85,23 @@ void ipPrint(const T& obj, bool d = isConteiner_v <T>) {
 
 int main() {
 
-	char a = -1;
+	/*char a = -1;
 	int b = 2130706433;
 	long long c = 8875824491850138409;
-	std::string f;;
+	
+	ipPrint(a);
+	ipPrint(b);
+	ipPrint(c);*/
+
 	std::vector <int> vec_ip = { 255,255,255,255 };
 	std::list<int> list_ip;
 	for (auto i = 0; i < 4; ++i)
 		list_ip.emplace_back(200 + i);
 
-	/*ipPrint(a);
-	ipPrint(b);
-	ipPrint(c);*/
-
 	ipPrint(vec_ip);
 	ipPrint(list_ip);
-	char a = -1;
-	//long long b = 8875824491850138409;
-	//int c = 2130706433;
+
+	std::string f;
 	/*std::vector<int> res;
 	res= transform <char>(a);
 	for (auto it : res) {
