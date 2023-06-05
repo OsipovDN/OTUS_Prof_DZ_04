@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <tuple>
 #include <bitset>
 
 /*! \brief Шаблоны для определения контейнер или нет(alias)
@@ -61,22 +60,23 @@ std::vector<int> transform(T& val) {
 }
 
 //Шаблонная функция print для контейнеров
+template <typename T, bool = isConteiner_v <T>>
+std::enable_if_t<isConteiner_v <T>, void> ipPrint(const T& obj) {};
+
 template <typename T>
-void ipPrint(const T& obj, bool d = isConteiner_v <T>) {
-	if (d) {
-		int i = 0;
-		for (auto& it : obj) {
-			std::cout << it;
-			if (i != 3)
-				std::cout << ".";
-			i++;
-		}
-		std::cout << std::endl;
+std::enable_if_t<true, void> ipPrint(const T& obj) {
+	int i = 0;
+	for (auto& it : obj) {
+		std::cout << it;
+		if (i != 3)
+			std::cout << ".";
+		i++;
 	}
-	if (!d) {
-		
-	}
+	std::cout << std::endl;
 };
+
+template <typename T>
+std::enable_if_t<false, void> ipPrint(const T& obj) {};
 
 
 //template <typename T>
