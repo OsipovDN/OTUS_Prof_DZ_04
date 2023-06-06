@@ -6,27 +6,18 @@
 #include <list>
 #include <bitset>
 
-/*! \brief Шаблоны для определения контейнер или нет(alias)
-
-	Алиас для простого доступа к полю структуры
-*/
+//Синоним для простого доступа к полю структуры
 template <typename T>
 auto isConteiner_v = isConteiner<T>::value;
 //false- если не контейнер
 template <typename T>
-struct isConteiner {
-	static const bool value = false;
-};
+struct isConteiner :std::false_type {};
 //true- если std::vector
-template <>
-struct isConteiner <std::vector<int>> {
-	static const bool value = true;
-};
+template <typename Alloc>
+struct isConteiner <std::vector<int,Alloc>>:std::true_type {};
 //true- если std::list
-template <>
-struct isConteiner <std::list<int>> {
-	static const bool value = true;
-};
+template <typename Alloc>
+struct isConteiner <std::list<int, Alloc>> :std::true_type {};
 
 //Функция преобразования из двоичного представления в десятичное
 int strToInt(std::string obj) {
@@ -60,23 +51,25 @@ std::vector<int> transform(T& val) {
 }
 
 //Шаблонная функция print для контейнеров
-template <typename T, bool = isConteiner_v <T>>
-std::enable_if_t<isConteiner_v <T>, void> ipPrint(const T& obj) {};
+template <typename T,bool= isConteiner_v <T>>
+void ipPrint(const T& obj) {};
 
 template <typename T>
-std::enable_if_t<true, void> ipPrint(const T& obj) {
-	int i = 0;
-	for (auto& it : obj) {
-		std::cout << it;
-		if (i != 3)
-			std::cout << ".";
-		i++;
-	}
-	std::cout << std::endl;
+void ipPrint(const T& obj) {
+		int i = 0;
+		for (auto& it : obj) {
+			std::cout << it;
+			if (i != 3)
+				std::cout << ".";
+			i++;
+		}
+		std::cout << std::endl;
 };
 
-template <typename T>
-std::enable_if_t<false, void> ipPrint(const T& obj) {};
+template<typename T>
+void ipPrint (std::enable_if_t<std::is_integral_v<T>,std::string>& obj) {
+
+}
 
 
 //template <typename T>
@@ -85,12 +78,12 @@ std::enable_if_t<false, void> ipPrint(const T& obj) {};
 
 int main() {
 
-	/*char a = -1;
-	int b = 2130706433;
+	/*char a = -1;*/
+	/*int b = 2130706433;
 	long long c = 8875824491850138409;*/
 
-	/*ipPrint(a);
-	ipPrint(b);*/
+	/*ipPrint(a);*/
+	/*ipPrint(b);*/
 	//ipPrint(c);
 
 	std::vector <int> vec_ip = { 255,255,255,255 };
