@@ -8,7 +8,7 @@
 
 //Синоним для простого доступа к полю структуры
 template <typename T>
-auto isConteiner_v = isConteiner<T>::value;
+static const bool isConteiner_v = isConteiner<T>::value;
 //false- если не контейнер
 template <typename T>
 struct isConteiner :std::false_type {};
@@ -54,22 +54,24 @@ std::vector<int> transform(T& val) {
 //////Шаблонная функция print
 //template <typename T,bool>
 //void ipPrint(const T& obj) {};
-//
-////Специализация для контейнеров
-//template <typename T, bool = isConteiner_v<T>>
-// void ipPrint <T,true>(const T& obj) {
-//	int i = 0;
-//	for (auto& it : obj) {
-//		std::cout << it;
-//		i++;
-//		if (i != temp.size()) std::cout << ".";
-//	}
-//	std::cout << std::endl;
-//};
+
+
+//Специализация для контейнеров
+template <typename T>
+typename std::enable_if_t<isConteiner_v<T>, void> ipPrint(T& obj) {
+	int i = 0;
+	for (auto& it : obj) {
+		std::cout << it;
+		i++;
+		if (i != obj.size()) std::cout << ".";
+	}
+	std::cout << std::endl;
+};
 
 //Специализация для целочисленных переменных
 template <typename T>
-void ipPrint(T& obj) {
+typename std::enable_if_t<std::is_integral_v<T>, void>
+ipPrint(T& obj) {
 	int i = 0;
 	std::vector<int> temp = transform <T>(obj);
 	for (auto& it : temp) {
@@ -92,13 +94,13 @@ int main() {
 	ipPrint(b);
 	ipPrint(c);
 
-	/*std::vector <int> vec_ip = { 255,255,255,255 };
+	std::vector <int> vec_ip = { 255,255,255,255 };
 	std::list<int> list_ip;
 	for (auto i = 0; i < 4; ++i)
 		list_ip.emplace_back(200 + i);
 
 	ipPrint(vec_ip);
-	ipPrint(list_ip);*/
+	ipPrint(list_ip);
 
 	/*std::string f;*/
 	/*std::vector<int> res;
