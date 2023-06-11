@@ -82,6 +82,12 @@ ipPrint(T& obj) {
 	std::cout << std::endl;
 };
 
+//Шаблон для строковой переменной
+template <typename T>
+typename std::enable_if_t< std::is_same <T,std::string>::value, void> ipPrint(T& obj) {
+	std::cout << obj << std::endl;
+}
+
 
 
 int main() {
@@ -94,6 +100,9 @@ int main() {
 	ipPrint(b);
 	ipPrint(c);
 
+	std::string str = { "Hello, World!"};
+	ipPrint(str);
+
 	std::vector <int> vec_ip = { 255,255,255,255 };
 	std::list<int> list_ip;
 	for (auto i = 0; i < 4; ++i)
@@ -101,15 +110,6 @@ int main() {
 
 	ipPrint(vec_ip);
 	ipPrint(list_ip);
-
-	/*std::string f;*/
-	/*std::vector<int> res;
-	res= transform <char>(a);
-	for (auto it : res) {
-		std::cout << it << " ";
-	}*/
-
-
 
 	return 0;
 }
