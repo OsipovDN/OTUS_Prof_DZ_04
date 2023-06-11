@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iomanip>
 #include <type_traits>
 #include <string>
 #include <vector>
@@ -49,12 +48,7 @@ std::vector<int> transform(T& val) {
 	}
 	return vec_byte;
 
-};
-
-//////Шаблонная функция print
-//template <typename T,bool>
-//void ipPrint(const T& obj) {};
-
+}
 
 //Специализация для контейнеров
 template <typename T>
@@ -66,7 +60,7 @@ typename std::enable_if_t<isConteiner_v<T>, void> ipPrint(T& obj) {
 		if (i != obj.size()) std::cout << ".";
 	}
 	std::cout << std::endl;
-};
+}
 
 //Специализация для целочисленных переменных
 template <typename T>
@@ -80,7 +74,13 @@ ipPrint(T& obj) {
 		if (i != temp.size())std::cout << ".";
 	}
 	std::cout << std::endl;
-};
+}
+
+//Шаблон для строковой переменной
+template <typename T>
+typename std::enable_if_t< std::is_same <T, std::string>::value, void> ipPrint(T& obj) {
+	std::cout << obj << std::endl;
+}
 
 //Шаблон для строковой переменной
 template <typename T>
