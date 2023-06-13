@@ -7,16 +7,16 @@
 
 //Синоним для простого доступа к полю структуры
 template <typename T>
-static const bool isConteiner_v = isConteiner<T>::value;
+using isConteiner_v <T> = isConteiner<T>::value;
 //метафункция для определения типа переменной (контейнер или нет)
 template <typename T>
 struct isConteiner :std::false_type {};
 //true- если std::vector
-template <typename Alloc>
-struct isConteiner <std::vector<int, Alloc>> :std::true_type {};
+template <typename T,typename Alloc>
+struct isConteiner <std::vector<T, Alloc>> :std::true_type {};
 //true- если std::list
-template <typename Alloc>
-struct isConteiner <std::list<int, Alloc>> :std::true_type {};
+template <typename T,typename Alloc>
+struct isConteiner <std::list<T, Alloc>> :std::true_type {};
 
 //Функция преобразования из двоичного представления в десятичное
 int strToInt(std::string obj) {
@@ -99,9 +99,9 @@ int main() {
 	print_ip(str);
 
 	std::vector <int> vec_ip = { 100,200,300,400 };
-	std::list<int> list_ip;
+	std::list<short> list_ip;
 	for (auto i = 0; i < 4; ++i)
-		list_ip.emplace_back(400 - i*100);
+		list_ip.emplace_back(static_cast <short>(400 - i*100));
 	//Вывод в консоль для контейнеров std::vector и std::list
 	print_ip(vec_ip);
 	print_ip(list_ip);
