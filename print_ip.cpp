@@ -8,7 +8,7 @@
 //Синоним для простого доступа к полю структуры
 template <typename T>
 static const bool isConteiner_v = isConteiner<T>::value;
-//false- если не контейнер
+//метафункция для определения типа переменной (контейнер или нет)
 template <typename T>
 struct isConteiner :std::false_type {};
 //true- если std::vector
@@ -20,11 +20,11 @@ struct isConteiner <std::list<int, Alloc>> :std::true_type {};
 
 //Функция преобразования из двоичного представления в десятичное
 int strToInt(std::string obj) {
-	int i = 7;	///< Переменная для расчета фкториала
+	int i = 7;
 	int res = 0;
 	for (auto it : obj) {
 		int val = static_cast<int>(it - '0');
-		res += val * (int)(pow(2, i));
+		res += val * static_cast<int>(pow(2, i));
 		i--;
 	}
 	return res;
@@ -52,7 +52,7 @@ std::vector<int> transform(T& val) {
 
 //Специализация для контейнеров
 template <typename T>
-typename std::enable_if_t<isConteiner_v<T>, void> ipPrint(T& obj) {
+typename std::enable_if_t<isConteiner_v<T>, void> print_ip(T& obj) {
 	int i = 0;
 	for (auto& it : obj) {
 		std::cout << it;
@@ -65,8 +65,8 @@ typename std::enable_if_t<isConteiner_v<T>, void> ipPrint(T& obj) {
 //Специализация для целочисленных переменных
 template <typename T>
 typename std::enable_if_t<std::is_integral_v<T>, void>
-ipPrint(T& obj) {
-	int i = 0;
+print_ip(T& obj) {
+	size_t i = 0;
 	std::vector<int> temp = transform <T>(obj);
 	for (auto& it : temp) {
 		std::cout << it;
@@ -78,38 +78,33 @@ ipPrint(T& obj) {
 
 //Шаблон для строковой переменной
 template <typename T>
-typename std::enable_if_t< std::is_same <T, std::string>::value, void> ipPrint(T& obj) {
+typename std::enable_if_t< std::is_same <T, std::string>::value, void> print_ip(T& obj) {
 	std::cout << obj << std::endl;
 }
-
-//Шаблон для строковой переменной
-template <typename T>
-typename std::enable_if_t< std::is_same <T,std::string>::value, void> ipPrint(T& obj) {
-	std::cout << obj << std::endl;
-}
-
-
 
 int main() {
 
-	char a = -1;
-	int b = 2130706433;
-	long long c = 8875824491850138409;
+	int8_t a = -1;
+	int16_t b = 0;
+	int32_t c = 2130706433;
+	int64_t d = 8875824491850138409;
+	//Вывод в консоль для целочисленных значений
+	print_ip(a);
+	print_ip(b);
+	print_ip(c);
+	print_ip(d);
 
-	ipPrint(a);
-	ipPrint(b);
-	ipPrint(c);
-
-	std::string str = { "Hello, World!"};
-	ipPrint(str);
+	std::string str = { "Hello, World!" };
+	//Вывод в консоль для строкового значений
+	print_ip(str);
 
 	std::vector <int> vec_ip = { 255,255,255,255 };
 	std::list<int> list_ip;
 	for (auto i = 0; i < 4; ++i)
 		list_ip.emplace_back(200 + i);
-
-	ipPrint(vec_ip);
-	ipPrint(list_ip);
+	//Вывод в консоль для контейнеров std::vector и std::list
+	print_ip(vec_ip);
+	print_ip(list_ip);
 
 	return 0;
 }
