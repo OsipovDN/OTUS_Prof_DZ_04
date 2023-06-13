@@ -6,31 +6,34 @@
 #include <cmath>
 #include <bitset>
 
-////метафункция для определения типа переменной (контейнер или нет)
-//template <typename T>
-//struct isConteiner :std::false_type {};
-////true- если std::vector
-//template <typename T,typename Alloc>
-//struct isConteiner <std::vector<T, Alloc>> :std::true_type {};
-////true- если std::list
-//template <typename T,typename Alloc>
-//struct isConteiner <std::list<T, Alloc>> :std::true_type {};
 
+template<typename T>
+constexpr static bool isConteiner_v = isConteiner<T>::value;
 //метафункция для определения типа переменной (контейнер или нет)
 template <typename T>
-struct isConteiner {
-	constexpr static bool value = false;
-};
+struct isConteiner :std::false_type {};
+//true- если std::vector
+template <typename T,typename Alloc>
+struct isConteiner <std::vector<T, Alloc>> :std::true_type {};
+//true- если std::list
+template <typename T,typename Alloc>
+struct isConteiner <std::list<T, Alloc>> :std::true_type {};
 
-template <typename T, typename Alloc>
-struct isConteiner <std::vector<T, Alloc>> {
-	constexpr static bool value = true;
-};
-
-template <typename T, typename Alloc>
-struct isConteiner <std::list<T, Alloc>> {
-	constexpr static bool value = true;
-};
+//метафункция для определения типа переменной (контейнер или нет)
+//template <typename T>
+//struct isConteiner {
+//	constexpr static bool value = false;
+//};
+//
+//template <typename T, typename Alloc>
+//struct isConteiner <std::vector<T, Alloc>> {
+//	constexpr static bool value = true;
+//};
+//
+//template <typename T, typename Alloc>
+//struct isConteiner <std::list<T, Alloc>> {
+//	constexpr static bool value = true;
+//};
 
 //Функция преобразования из двоичного представления в десятичное
 int strToInt(std::string obj) {
@@ -66,7 +69,7 @@ std::vector<int> transform(T& val) {
 
 //Специализация для контейнеров
 template <typename T>
-typename std::enable_if_t<isConteiner<T>::value> print_ip(T& obj) {
+typename std::enable_if_t<isConteiner_v<T>> print_ip(T& obj) {
 	size_t i = 0;
 	for (auto& it : obj) {
 		std::cout << it;
