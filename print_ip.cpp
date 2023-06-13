@@ -7,33 +7,17 @@
 #include <bitset>
 
 
-//метафункция для определения типа переменной (контейнер или нет)
+//metafunction for determining the type of variable (container or not)
 template <typename T>
 struct isConteiner :std::false_type {};
-//true- если std::vector
+//true- if std::vector
 template <typename T,typename Alloc>
 struct isConteiner <std::vector<T, Alloc>> :std::true_type {};
-//true- если std::list
+//true- if std::list
 template <typename T,typename Alloc>
 struct isConteiner <std::list<T, Alloc>> :std::true_type {};
 
-//метафункция для определения типа переменной (контейнер или нет)
-//template <typename T>
-//struct isConteiner {
-//	constexpr static bool value = false;
-//};
-//
-//template <typename T, typename Alloc>
-//struct isConteiner <std::vector<T, Alloc>> {
-//	constexpr static bool value = true;
-//};
-//
-//template <typename T, typename Alloc>
-//struct isConteiner <std::list<T, Alloc>> {
-//	constexpr static bool value = true;
-//};
-
-//Функция преобразования из двоичного представления в десятичное
+//Conversion function from binary representation to decimal
 int strToInt(std::string obj) {
 	int i = 7;
 	int res = 0;
@@ -45,7 +29,7 @@ int strToInt(std::string obj) {
 	return res;
 }
 
-//Шаблон функции преобразования std::string в std::vector <int>- vec {255,255,255,255}
+//Template of the conversion function std::string in std::vector <int>- vec {255,255,255,255}
 template<typename T>
 std::vector<int> transform(T& val) {
 	std::vector<int> vec_byte;
@@ -65,7 +49,7 @@ std::vector<int> transform(T& val) {
 
 }
 
-//Специализация для контейнеров
+//Specialization for containers
 template <typename T>
 typename std::enable_if_t<isConteiner<T>::value> print_ip(T& obj) {
 	size_t i = 0;
@@ -77,7 +61,7 @@ typename std::enable_if_t<isConteiner<T>::value> print_ip(T& obj) {
 	std::cout << std::endl;
 }
 
-//Специализация для целочисленных переменных
+//Specialization for integer variables
 template <typename T>
 typename std::enable_if_t<std::is_integral_v<T>, void>
 print_ip(T& obj) {
@@ -91,7 +75,7 @@ print_ip(T& obj) {
 	std::cout << std::endl;
 }
 
-//Шаблон для строковой переменной
+//Template for a string variable
 template <typename T>
 typename std::enable_if_t< std::is_same <T, std::string>::value, void> print_ip(T& obj) {
 	std::cout << obj << std::endl;
@@ -103,21 +87,21 @@ int main() {
 	int16_t b = 0;
 	int32_t c = 2130706433;
 	int64_t d = 8875824491850138409;
-	//Вывод в консоль для целочисленных значений
+	//Output to the console for integer values
 	print_ip(a);
 	print_ip(b);
 	print_ip(c);
 	print_ip(d);
 
 	std::string str = { "Hello, World!" };
-	//Вывод в консоль для строкового значений
+	//Output to the console for string values
 	print_ip(str);
 
 	std::vector <int> vec_ip = { 100,200,300,400 };
 	std::list<short> list_ip;
 	for (auto i = 0; i < 4; ++i)
 		list_ip.emplace_back(static_cast <short>(400 - i * 100));
-	//Вывод в консоль для контейнеров std::vector и std::list
+	//Output to the console for std::vector and std::list
 	print_ip(vec_ip);
 	print_ip(list_ip);
 
