@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <cmath>
 #include <bitset>
 
 ////метафункция для определения типа переменной (контейнер или нет)
@@ -37,7 +38,7 @@ int strToInt(std::string obj) {
 	int res = 0;
 	for (auto it : obj) {
 		int val = static_cast<int>(it - '0');
-		res += val * static_cast<int>(pow(2, i));
+		res += val * static_cast<int>(std::pow(2, i));
 		i--;
 	}
 	return res;
@@ -66,7 +67,7 @@ std::vector<int> transform(T& val) {
 //Специализация для контейнеров
 template <typename T>
 typename std::enable_if_t<isConteiner<T>::value> print_ip(T& obj) {
-	int i = 0;
+	size_t i = 0;
 	for (auto& it : obj) {
 		std::cout << it;
 		i++;
