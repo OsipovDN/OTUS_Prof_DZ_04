@@ -16,10 +16,6 @@
 //struct isConteiner <std::list<T, Alloc>> :std::true_type {};
 
 //метафункция для определения типа переменной (контейнер или нет)
-
-template <typename T>
-constexpr static bool isConteiner_v = isConteiner<T>::value;
-
 template <typename T>
 struct isConteiner {
 	static const bool value = false;
@@ -69,7 +65,7 @@ std::vector<int> transform(T& val) {
 
 //Специализация для контейнеров
 template <typename T>
-typename std::enable_if_t<isConteiner_v<T>, void> print_ip(T& obj) {
+typename std::enable_if_t<isConteiner<T>::value, void> print_ip(T& obj) {
 	int i = 0;
 	for (auto& it : obj) {
 		std::cout << it;
