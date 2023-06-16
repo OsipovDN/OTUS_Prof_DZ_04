@@ -5,6 +5,7 @@
 #include <list>
 #include <cmath>
 #include <bitset>
+#include <iterator>
 
 
 //metafunction for determining the type of variable (container or not)
