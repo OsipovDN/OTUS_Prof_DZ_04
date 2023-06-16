@@ -61,18 +61,34 @@ typename std::enable_if_t<isConteiner<T>::value> print_ip(T& obj) {
 	std::cout << std::endl;
 }
 
-//Specialization for integer variables
+////Specialization for integer variables
+//template <typename T>
+//typename std::enable_if_t<std::is_integral_v<T>>
+//print_ip(T& obj) {
+//	size_t i = 0;
+//	std::vector<int> temp = transform <T>(obj);
+//	for (auto& it : temp) {
+//		std::cout << it;
+//		i++;
+//		if (i != temp.size())std::cout << ".";
+//	}
+//	std::cout << std::endl;
+//}
+
+//Альтернативный вариант для интегральных типов. Рекомендация от преподавателей
 template <typename T>
 typename std::enable_if_t<std::is_integral_v<T>>
 print_ip(T& obj) {
-	size_t i = 0;
-	std::vector<int> temp = transform <T>(obj);
-	for (auto& it : temp) {
-		std::cout << it;
-		i++;
-		if (i != temp.size())std::cout << ".";
+	{
+		auto bytes = reinterpret_cast<const unsigned char*>(&obj);
+		auto end = bytes + sizeof(T);
+		std::copy(
+			std::make_reverse_iterator(end),
+			std::make_reverse_iterator(bytes + 1),
+			std::ostream_iterator<unsigned>(std::cout, ".")
+		);
+		std::cout << unsigned(*bytes) << std::endl;
 	}
-	std::cout << std::endl;
 }
 
 //Template for a string variable
